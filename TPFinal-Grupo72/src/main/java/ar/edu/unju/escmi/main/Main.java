@@ -10,6 +10,28 @@ import ar.edu.unju.escmi.dao.imp.*;
 
 public class Main {
 
+		public static List<Salon> precargarSalones() {
+		
+	    List<Salon> salones = new ArrayList<>();
+	    
+	    salones.add(new Salon("Salón Cosmos", 60, false, 50000, null));
+	    salones.add(new Salon("Salón Esmeralda", 20, false, 20000, null));
+	    salones.add(new Salon("Salón Galaxy", 100, true, 80000, null));
+	    
+	    return salones;
+	}
+	
+	 public static List<ServicioAdicional> precargarServicios() {
+	        List<ServicioAdicional> servicios = new ArrayList<>();
+
+	    servicios.add(new ServicioAdicional("Cámara 360", 15000, null));
+	    servicios.add(new ServicioAdicional("Cabina de fotos", 10000, null));
+	    servicios.add(new ServicioAdicional("Filmación", 20000, null));
+	    servicios.add(new ServicioAdicional("Pintacaritas", 7500, null));
+
+	        return servicios;
+	    }
+	 
 	private static ClienteDaoImp clienteDaoImp = new ClienteDaoImp();
 	private static ReservaDaoImp reservaDaoImp = new ReservaDaoImp();
 	private static SalonDaoImp salonDaoImp = new SalonDaoImp();
@@ -22,7 +44,8 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		
 		boolean band=true;
-		
+		precargarSalones();
+		precargarServicios();
 		do {
 			System.out.println("*****MENU*****");
 			System.out.println("1-Alta de cliente");
@@ -231,7 +254,7 @@ public class Main {
         Cliente cliente = new Cliente();
         
         boolean clienteValido=false;
-        // Validar Cliente
+        
         do {
             try {
                 System.out.println("Ingrese el ID del cliente:");
@@ -245,11 +268,11 @@ public class Main {
                 }
             } catch (Exception e) {
                 System.out.println("\nID no válido. Por favor ingrese nuevamente.");
-                sc.nextLine(); // Limpiar el buffer
+                sc.nextLine(); 
             }
         } while (!clienteValido);
 
-        // Validar Salón
+        
         Salon salon = null;
         do {
             System.out.println("Ingrese el ID del salón:");
@@ -261,7 +284,7 @@ public class Main {
             }
         } while (salon == null);
 
-        // Validar Horas
+        
         System.out.println("Ingrese la hora de inicio (formato 24 horas):");
         short horaInicio = sc.nextShort();
 
@@ -273,7 +296,7 @@ public class Main {
             return;
         }
 
-        // Servicios adicionales
+       
         List<ServicioAdicional> serviciosAdicionales = new ArrayList<>();
         boolean agregarServicios = true;
         do {
@@ -295,11 +318,11 @@ public class Main {
             }
         } while (agregarServicios);
 
-        // Pago adelantado
+      
         System.out.println("Ingrese un pago adelantado (opcional, 0 si no desea):");
         double pagoAdelantado = sc.nextDouble();
 
-        // Crear la Reserva
+      
         Reserva nuevaReserva = new Reserva(cliente, salon, LocalDate.now(), horaInicio, horaFin, 0, serviciosAdicionales, pagoAdelantado, false);
         reservaDaoImp.guardarReserva(nuevaReserva);
 
