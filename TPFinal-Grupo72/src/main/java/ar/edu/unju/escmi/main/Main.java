@@ -92,7 +92,10 @@ public class Main {
 			break;
 			
 			case "7":
-				consultarUnaReserva();
+				System.out.println("Ingrese el ID de la reserva: ");
+				long idR = sc.nextLong();
+				sc.nextLine();
+				consultarUnaReserva(idR);
 			break;
 			
 			case "8":
@@ -338,8 +341,18 @@ public class Main {
 		    }
 	}
 	
-	public static void consultarUnaReserva() {
-		
+	public static void consultarUnaReserva(long idReserva) {
+		try {
+			Reserva reserva = reservaDaoImp.consultarReserva(idReserva);
+	        if (reserva != null) {
+	            System.out.println("\nReserva encontrada:");
+	            reserva.mostrarDatos();
+	        } else {
+	            System.out.println("No se encontró una reserva con el ID especificado.");
+	        }
+	    } catch (Exception e) {
+	        System.out.println("Error al consultar la reserva: ");
+	    }
 	}
 	
 	public static void consultarSalones() {
