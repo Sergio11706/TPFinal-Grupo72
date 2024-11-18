@@ -11,9 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import ar.edu.unju.escmi.dao.imp.SalonDaoImp;
+
 @Entity
 @Table(name = "salones")
 public class Salon {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "salon_id")
@@ -93,6 +96,21 @@ public class Salon {
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
+	
+	public void inicializarSalones() {
+		
+		SalonDaoImp salonDaoImp = new SalonDaoImp();
+		
+		Salon salonCosmos = new Salon("Cosmos", 60, false, 20000, null);
+	    Salon salonEsmeralda = new Salon("Esmeralda", 20, false, 10000, null);
+	    Salon salonGalaxy = new Salon("Galaxy", 100, true, 50000, null);
+
+        salonDaoImp.guardarSalon(salonCosmos);
+        salonDaoImp.guardarSalon(salonEsmeralda);
+        salonDaoImp.guardarSalon(salonGalaxy);
+
+        System.out.println("Salones inicializados correctamente.");
+    }
 
 	public void mostrarDatos() {
 		System.out.println("\nSalon: " + id);
