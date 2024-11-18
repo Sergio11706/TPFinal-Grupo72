@@ -356,7 +356,11 @@ public class Main {
 	}
 	
 	public static void consultarSalones() {
-		
+		 try {
+		        salonDaoImp.mostrarLosSalones();
+		    } catch (Exception e) {
+		        System.out.println("Error al consultar los salones. ");
+		    }
 	}
 	
 	public static void consultarServicios() {
