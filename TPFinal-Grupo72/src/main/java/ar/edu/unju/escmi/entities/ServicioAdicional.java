@@ -1,5 +1,9 @@
 package ar.edu.unju.escmi.entities;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import ar.edu.unju.escmi.dao.imp.ServicioAdicionalDaoImp;
 
 @Entity
 @Table(name = "servicios")
@@ -79,6 +85,24 @@ public class ServicioAdicional {
 	public void setReserva(Reserva reserva) {
 		this.reserva = reserva;
 	}
+	
+	
+	public void inicializarServicios() {
+        ServicioAdicionalDaoImp servicioDao = new ServicioAdicionalDaoImp();
+
+        List<ServicioAdicional> servicios = new ArrayList<>();
+        servicios.add(new ServicioAdicional("Cámara 360", 5000, null));
+        servicios.add(new ServicioAdicional("Cabina de fotos", 3000, null));
+        servicios.add(new ServicioAdicional("Filmación", 8000, null));
+        servicios.add(new ServicioAdicional("Pintacaritas", 2000, null));
+
+        for (ServicioAdicional servicio : servicios) {
+            servicioDao.guardarServicio(servicio);
+        }
+
+        System.out.println("Servicios adicionales inicializados correctamente.");
+    }
+	
 
 	public void mostrarDatos() {
 		System.out.println("\nServicio adicional: " + id);

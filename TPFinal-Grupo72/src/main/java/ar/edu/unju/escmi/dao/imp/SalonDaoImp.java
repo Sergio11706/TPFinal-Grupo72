@@ -26,4 +26,19 @@ public class SalonDaoImp implements ISalonDao {
 	public Salon consultarSalon(long idSalon) {
 		return manager.find(Salon.class, idSalon);
 	}
+	
+	
+	@Override
+	public void guardarSalon(Salon salon) {
+        try {
+            manager.getTransaction().begin();
+            manager.merge(salon);
+            manager.getTransaction().commit();
+        } catch (Exception e) {
+            if (manager.getTransaction() != null) {
+                manager.getTransaction().rollback();
+            }
+            System.out.println("Error al guardar el salón: " + e.getMessage());
+        }
+    }
 }
