@@ -10,35 +10,44 @@ import ar.edu.unju.escmi.dao.imp.*;
 
 public class Main {
 
-		public static List<Salon> precargarSalones() {
+public static void precargarSalones() {
 		
-	    List<Salon> salones = new ArrayList<>();
-	    
-	    salones.add(new Salon("Salón Cosmos", 60, false, 50000, null));
-	    salones.add(new Salon("Salón Esmeralda", 20, false, 20000, null));
-	    salones.add(new Salon("Salón Galaxy", 100, true, 80000, null));
-	    
-	    return salones;
-	}
-	
-	 public static List<ServicioAdicional> precargarServicios() {
-	        List<ServicioAdicional> servicios = new ArrayList<>();
+		SalonDaoImp salonDaoImp = new SalonDaoImp();
+		
+		Salon salonCosmos = new Salon("Cosmos", 60, false, 20000, null);
+	    Salon salonEsmeralda = new Salon("Esmeralda", 20, false, 10000, null);
+	    Salon salonGalaxy = new Salon("Galaxy", 100, true, 50000, null);
 
-	    servicios.add(new ServicioAdicional("Cámara 360", 15000, null));
-	    servicios.add(new ServicioAdicional("Cabina de fotos", 10000, null));
-	    servicios.add(new ServicioAdicional("Filmación", 20000, null));
-	    servicios.add(new ServicioAdicional("Pintacaritas", 7500, null));
+        salonDaoImp.guardarSalon(salonCosmos);
+        salonDaoImp.guardarSalon(salonEsmeralda);
+        salonDaoImp.guardarSalon(salonGalaxy);
 
-	        return servicios;
-	    }
+        System.out.println("Salones cargados correctamente.");
+    }
+		
+public static List<ServicioAdicional> precargarServicios() {
+
+	 
+	    ServicioAdicional camara360 = new ServicioAdicional("Cámara 360", 5000, null);
+	    ServicioAdicional cabinaFotos = new ServicioAdicional("Cabina de fotos", 3000, null);
+	    ServicioAdicional filmacion = new ServicioAdicional("Filmación", 8000, null);
+	    ServicioAdicional pintacaritas = new ServicioAdicional("Pintacaritas", 2000, null);
+
+	    List<ServicioAdicional> servicios = new ArrayList<>();
+	    servicios.add(camara360);
+	    servicios.add(cabinaFotos);
+	    servicios.add(filmacion);
+	    servicios.add(pintacaritas);
+	    
+
+    System.out.println("Servicios adicionales cargados correctamente.");
+	return servicios;
+}
 	 
 	private static ClienteDaoImp clienteDaoImp = new ClienteDaoImp();
 	private static ReservaDaoImp reservaDaoImp = new ReservaDaoImp();
 	private static SalonDaoImp salonDaoImp = new SalonDaoImp();
-	private static ServicioAdicionalDaoImp servicioAdicionalDaoImp = new ServicioAdicionalDaoImp();
 
-
-	
 	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in);
@@ -249,11 +258,6 @@ public class Main {
 	
 	public static void realizarReserva(Scanner sc) {
 		
-		Salon saloninicio = new Salon();
-        saloninicio.inicializarSalones();
-        ServicioAdicional servicioInicio = new ServicioAdicional();
-        servicioInicio.inicializarServicios();
-        
         Cliente cliente = new Cliente();
         
         boolean clienteValido=false;
@@ -364,6 +368,15 @@ public class Main {
 	}
 	
 	public static void consultarServicios() {
-		
+		 List<ServicioAdicional> servicios = precargarServicios(); 
+
+		    if (servicios == null || servicios.isEmpty()) {
+		        System.out.println("No hay servicios adicionales disponibles.");
+		        return;
+		    }
+
+		    for (ServicioAdicional servicio : servicios) {
+		        servicio.mostrarDatos();
+		   }
 	}
-}
+	}
