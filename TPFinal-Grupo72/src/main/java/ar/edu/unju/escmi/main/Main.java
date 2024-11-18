@@ -331,7 +331,11 @@ public class Main {
 	}
 	
 	public static void consultarReservas() {
-		
+		 try {
+		        reservaDaoImp.mostrarTodosLasReservas();
+		    } catch (Exception e) {
+		        System.out.println("Error al consultar las reservas ");
+		    }
 	}
 	
 	public static void consultarUnaReserva() {
