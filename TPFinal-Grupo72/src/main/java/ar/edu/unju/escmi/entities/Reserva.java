@@ -31,7 +31,7 @@ public class Reserva {
 	private Salon salon;
 	
 	@Column(name = "reserva_fecha")
-	private LocalDate fecha = LocalDate.now();
+	private LocalDate fecha;
 	
 	@Column(name = "reserva_hora_inicio")
 	private short horaInicio;
@@ -58,7 +58,7 @@ public class Reserva {
 	}
 
 	public Reserva(Cliente cliente, Salon salon, LocalDate fecha, short horaInicio, short horaFin, double montoPagado,
-			List<ServicioAdicional> servicios, double pagoAdelantado, boolean cancelado) {
+			double pagoAdelantado, boolean cancelado) {
 		super();
 		this.cliente = cliente;
 		this.salon = salon;
@@ -66,7 +66,6 @@ public class Reserva {
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
 		this.montoPagado = montoPagado;
-		this.servicios = servicios;
 		this.pagoAdelantado = pagoAdelantado;
 		this.cancelado = cancelado;
 	}
@@ -131,8 +130,8 @@ public class Reserva {
 		return servicios;
 	}
 
-	public void setServicios(List<ServicioAdicional> servicios) {
-		this.servicios = servicios;
+	public void setServicios(ServicioAdicional servicio) {
+		servicios.add(servicio);
 	}
 
 	public double getPagoAdelantado() {

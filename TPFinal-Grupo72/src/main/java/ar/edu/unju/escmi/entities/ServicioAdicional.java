@@ -34,11 +34,10 @@ public class ServicioAdicional {
 	public ServicioAdicional() {
 	}
 
-	public ServicioAdicional(String descripcion, double precio, Reserva reserva) {
+	public ServicioAdicional(String descripcion, double precio) {
 		super();
 		this.descripcion = descripcion;
 		this.precio = precio;
-		this.reserva = reserva;
 	}
 
 	public long getId() {
