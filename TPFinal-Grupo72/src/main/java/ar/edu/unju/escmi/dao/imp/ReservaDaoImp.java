@@ -28,7 +28,7 @@ public class ReservaDaoImp implements IReservaDao {
 
 	@Override
 	public void mostrarTodosLasReservas() {
-		Query query = manager.createQuery("SELECT e FROM Reserva r",Reserva.class);
+		Query query = manager.createQuery("SELECT e FROM Reserva e",Reserva.class);
 		@SuppressWarnings("unchecked")
 		List<Reserva> reservas = query.getResultList();
 		for(Reserva reserva : reservas) {

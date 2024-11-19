@@ -1,6 +1,7 @@
 package ar.edu.unju.escmi.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,7 +44,7 @@ public class Reserva {
 	private double montoPagado;
 	
 	@OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
-    private List<ServicioAdicional> servicios;
+    private List<ServicioAdicional> servicios = new ArrayList<>();
 	
 	@Column(name = "reserva_pago_adelantado")
 	private double pagoAdelantado;
@@ -190,7 +191,7 @@ public class Reserva {
 		System.out.println("Reservado de: " + horaInicio + " - " + horaFin);
 		
 		if(servicios != null && !servicios.isEmpty()) {
-			System.out.println("Servicios adicionales: " + servicios);
+			System.out.println("Servicios adicionales: ");
 			servicios.forEach(servicio ->
 			System.out.println(" -" + servicio.getDescripcion() + ": $" + servicio.getPrecio()));
 		}

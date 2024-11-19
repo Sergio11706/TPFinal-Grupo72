@@ -18,12 +18,14 @@ public class Main {
 	private static ReservaDaoImp reservaDaoImp = new ReservaDaoImp();
 	private static SalonDaoImp salonDaoImp = new SalonDaoImp();
 
-	private static ServicioAdicional camara360;
+	private static ServicioAdicional camara360 = null;
 	private static ServicioAdicional cabinaFotos;
 	private static ServicioAdicional filmacion;
 	private static ServicioAdicional pintacaritas;
 	
 	private static List<Reserva> reservas = new ArrayList<>(); 
+	
+	private static int reservasSinPagar = 0;
 	
 	public static void main(String[] args) {
 		
@@ -59,7 +61,7 @@ public class Main {
 				boolean datoInvalido=true;
 				do {
 					try {
-						System.out.println("\nIngrese el ID del cliente: ");
+						System.out.print("\nIngrese el ID del cliente: ");
 						long id = sc.nextLong();
 						consultarCliente(id);
 						datoInvalido=false;
@@ -78,7 +80,12 @@ public class Main {
 			break;
 			
 			case "4":
-				realizarPago(sc);
+				if(reservasSinPagar>0) {
+					realizarPago(sc);
+				}
+				else {
+					System.out.println("\nNo hay pagos pendientes.");
+				}
 			break;
 			
 			case "5":
@@ -128,8 +135,6 @@ public class Main {
 	}
 	
 	public static void precargarSalones() {
-		
-		SalonDaoImp salonDaoImp = new SalonDaoImp();
 		
 		Salon salonCosmos = new Salon("Cosmos", 60, false, 20000);
 	    Salon salonEsmeralda = new Salon("Esmeralda", 20, false, 10000);
@@ -233,7 +238,7 @@ public class Main {
 	    System.out.print("Ingrese el nuevo domicilio: ");
 	    cliente.setDomicilio(sc.nextLine());
 	    
-	    System.out.println("Ingrese el nuevo telefono: ");
+	    System.out.print("Ingrese el nuevo telefono: ");
 	    cliente.setTelefono(sc.nextLine());
 
 		do {
@@ -290,7 +295,7 @@ public class Main {
         double monto = 0;
         do {
 			try {
-				System.out.println("monto faltante $"+(reserva.calcularMontoTotal()-reserva.getMontoPagado()));
+				System.out.println("monto faltante $"+reserva.calcularPagoPendiente());
 				System.out.print("Ingrese el monto a pagar: ");
 				monto = sc.nextDouble();
 				datoInvalido=false;
@@ -314,6 +319,7 @@ public class Main {
             	reserva.setMontoPagado(reserva.calcularMontoTotal());
             }
             
+        	reservasSinPagar--;
         	System.out.println("\nPago completo, la reserva ha sido cancelada.\n");
         } 
         else {
@@ -334,7 +340,7 @@ public class Main {
 	    boolean datoInvalido=true;
 	    do {
 	    	try {
-	    		System.out.print("\nIngrese el ID del cliente a modificar: ");
+	    		System.out.print("\nIngrese el ID del cliente: ");
 		        idCliente = sc.nextLong();
 		        
 		        cliente = clienteDaoImp.consultarCliente(idCliente);
@@ -371,6 +377,9 @@ public class Main {
             catch(Exception e) {
             	System.out.println("\nDato no valido, ingrese nuvamente el ID.");
             }
+        	finally {
+        		sc.nextLine();
+        	}
         } while (datoInvalido);
 
         nuevaReserva.setSalon(salon);
@@ -386,6 +395,7 @@ public class Main {
         		fecha = LocalDate.parse(fechaStr, formato);
         		if(fecha.isBefore(LocalDate.now())) {
         			System.out.println("\nLa fecha de reserva no puede ser anterior a la actual, ingrese nuevamente la fecha.");
+        			continue;
         		}
         		
         		for(Reserva reserva: reservas) {
@@ -426,6 +436,8 @@ public class Main {
                 	System.out.println("\nEl tiempo minimo de reserva es de 4 horas, ingrese nuevamente.");
                 	continue;
                 }
+                
+                datoInvalido = false;
         	}
         	catch(Exception e) {
         		System.out.println("\nDato no valido, ingrese nuevamente las horas.");
@@ -508,6 +520,7 @@ public class Main {
         	try {
         		System.out.print("\nIngrese un pago adelantado (opcional, 0 si no desea): ");
         		pagoAdelantado = sc.nextDouble();
+        		datoInvalido=false;
         	}
         	catch(Exception e) {
         		System.out.println("\nDato no valido, ingrese nuevamente el pago adelantado.");
@@ -518,19 +531,23 @@ public class Main {
         }while(datoInvalido);
               
         nuevaReserva.setPagoAdelantado(pagoAdelantado);
+        nuevaReserva.setMontoPagado(pagoAdelantado);
+        nuevaReserva.setEstado(true);
+        nuevaReserva.setCancelado(false);
         
         cliente.setReservas(nuevaReserva);
         salon.setReservas(nuevaReserva);
         reservas.add(nuevaReserva);
         reservaDaoImp.guardarReserva(nuevaReserva);
 
+        reservasSinPagar++;
         System.out.println("\nReserva creada con éxito.");
         nuevaReserva.mostrarDatos();
 	}
 	
 	public static void consultarReservas() {
 		 if(reservas.isEmpty()) {
-			 System.out.println("\nNingun salon de se encuentra reservado.");
+			 System.out.println("\nNingun salon se encuentra reservado.");
 		 }
 		 else {
 			 reservaDaoImp.mostrarTodosLasReservas();

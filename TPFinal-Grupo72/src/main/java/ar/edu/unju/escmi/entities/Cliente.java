@@ -1,5 +1,6 @@
 package ar.edu.unju.escmi.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -38,7 +39,7 @@ public class Cliente {
 	private boolean estado = true;
 	
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-	private List<Reserva> reservas;
+	private List<Reserva> reservas = new ArrayList<>();
 
 	public Cliente() {
 	}
