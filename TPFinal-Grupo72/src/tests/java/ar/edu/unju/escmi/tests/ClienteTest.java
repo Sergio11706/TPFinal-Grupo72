@@ -19,10 +19,10 @@ class ClienteTest {
 
     @Test
     void testDarDeAltaYModificarCliente() {
-        Cliente nuevoCliente = new Cliente(44055521, "Lionel", "Avila", "Monterrico", "388111111");
+        Cliente nuevoCliente = new Cliente(1, "Lionel", "Avila", "Monterrico", "388111111");
         clienteDao.guardarCliente(nuevoCliente);
 
-        Cliente clienteConsultado = clienteDao.consultarCliente(44055521);
+        Cliente clienteConsultado = clienteDao.consultarCliente(1);
         assertNotNull(clienteConsultado, "El cliente debería haberse dado de alta correctamente");
         assertEquals("Lionel", clienteConsultado.getNombre(), "El nombre del cliente debería coincidir");
 
@@ -30,9 +30,9 @@ class ClienteTest {
         clienteConsultado.setApellido("Santos");
         clienteDao.modificarCliente(clienteConsultado);
 
-        Cliente clienteEsperado = new Cliente(440552121, "Gabriel", "Santos", "Palpala", "388222222");
+        Cliente clienteEsperado = new Cliente(1, "Gabriel", "Santos", "Palpala", "388222222");
 
-        Cliente clienteModificado = clienteDao.consultarCliente(440552121);
+        Cliente clienteModificado = clienteDao.consultarCliente(1);
 
         assertEquals(clienteEsperado.getNombre(), clienteModificado.getNombre(), "El nombre debería haberse actualizado correctamente");
         assertEquals(clienteEsperado.getApellido(), clienteModificado.getApellido(), "El apellido debería haberse actualizado correctamente");

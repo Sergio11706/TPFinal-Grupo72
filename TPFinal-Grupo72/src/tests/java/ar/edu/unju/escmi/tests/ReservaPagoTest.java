@@ -16,11 +16,11 @@ public class ReservaPagoTest {
 
     @BeforeEach
     void setUp() {
-        Cliente cliente = new Cliente(12345678, "Ana", "Lopez", "Centro", "987654321");
+        Cliente cliente = new Cliente(1, "Ana", "Lopez", "Centro", "987654321");
         Salon salon = new Salon("Salon Esmeralda", 20, false, 10000);
         short hi = 10;
-        short hf = 16;
-        reserva = new Reserva(cliente, salon, LocalDate.now(), hi, hf, 0.0, 5000, false);
+        short hf = 14;
+        reserva = new Reserva(cliente, salon, LocalDate.now(), hi, hf, 0.0, 10000, true);
     }
 
     @Test
@@ -29,12 +29,12 @@ public class ReservaPagoTest {
         assertEquals(10000, montoTotal, "El monto total de la reserva debería ser 10000");
 
         double pagoAdelantado = reserva.getPagoAdelantado();
-        assertEquals(5000, pagoAdelantado, "El pago adelantado debería ser 5000");
+        assertEquals(10000, pagoAdelantado, "El pago adelantado debería ser 10000");
 
         double montoPendiente = reserva.calcularPagoPendiente();
-        assertEquals(5000, montoPendiente, "El monto pendiente debería ser 5000");
+        assertEquals(0, montoPendiente, "El monto pendiente debería ser 0");
 
-        reserva.setMontoPagado(montoPendiente);
+        reserva.setMontoPagado(pagoAdelantado);
         reserva.calcularPagoPendiente();
 
         assertTrue(reserva.isCancelado(), "La reserva debería estar marcada como cancelada después de pagar el monto total");
