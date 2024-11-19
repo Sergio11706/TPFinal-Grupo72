@@ -452,7 +452,7 @@ public class Main {
         
         boolean agregarServicio = true;
         do {
-            System.out.println("\n¿Desea incluir el servicio de Camara 360?(s/n)");
+            System.out.println("\n¿Desea incluir el servicio de Camara 360?(Costo Adicional: $5000)(s/n)");
             String respuesta = sc.nextLine();
             switch(respuesta) {
             case "s":
@@ -468,7 +468,7 @@ public class Main {
 
         agregarServicio = true;
         do {
-            System.out.println("\n¿Desea incluir el servicio de Cabina de fotos?(s/n)");
+            System.out.println("\n¿Desea incluir el servicio de Cabina de fotos?(Costo Adicional: $3000)(s/n)");
             String respuesta = sc.nextLine();
             switch(respuesta) {
             case "s":
@@ -484,7 +484,7 @@ public class Main {
         
         agregarServicio = true;
         do {
-            System.out.println("\n¿Desea incluir el servicio de Filmacion?(s/n)");
+            System.out.println("\n¿Desea incluir el servicio de Filmacion?(Costo Adicional: $8000)(s/n)");
             String respuesta = sc.nextLine();
             switch(respuesta) {
             case "s":
@@ -500,7 +500,7 @@ public class Main {
         
         agregarServicio = true;
         do {
-            System.out.println("\n¿Desea incluir el servicio de Pintacaritas?(s/n)");
+            System.out.println("\n¿Desea incluir el servicio de Pintacaritas?(Costo Adicional: $2000)(s/n)");
             String respuesta = sc.nextLine();
             switch(respuesta) {
             case "s":
@@ -514,12 +514,21 @@ public class Main {
             }
         } while (agregarServicio);
         
+        double montoTotal = nuevaReserva.calcularMontoTotal(); 
+
+        System.out.println("\nMonto total de la reserva: " + montoTotal);
+
+        
         datoInvalido=true;
         double pagoAdelantado=0;
         do {
         	try {
         		System.out.print("\nIngrese un pago adelantado (opcional, 0 si no desea): ");
         		pagoAdelantado = sc.nextDouble();
+        		if (pagoAdelantado > montoTotal) {
+                    System.out.println("\nEl pago adelantado no puede ser mayor al monto total de la reserva, ingrese nuevamente.");
+                    continue;
+                }
         		datoInvalido=false;
         	}
         	catch(Exception e) {
@@ -533,7 +542,12 @@ public class Main {
         nuevaReserva.setPagoAdelantado(pagoAdelantado);
         nuevaReserva.setMontoPagado(pagoAdelantado);
         nuevaReserva.setEstado(true);
-        nuevaReserva.setCancelado(false);
+        if (pagoAdelantado == montoTotal) {
+        	nuevaReserva.setCancelado(true);
+        }
+        else {        	
+        	nuevaReserva.setCancelado(false);
+        }
         
         cliente.setReservas(nuevaReserva);
         salon.setReservas(nuevaReserva);
