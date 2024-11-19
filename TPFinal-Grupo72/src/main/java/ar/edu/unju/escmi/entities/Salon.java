@@ -1,5 +1,6 @@
 package ar.edu.unju.escmi.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -33,18 +34,17 @@ public class Salon {
 	private double precio;
 	
 	@OneToMany(mappedBy = "salon", cascade = CascadeType.ALL)
-	private List<Reserva> reservas;
+	private List<Reserva> reservas = new ArrayList<>();
 	
 	public Salon() {
 	}
 
-	public Salon(String nombre, int capacidad, boolean conPileta , double precio, List<Reserva> reservas) {
+	public Salon(String nombre, int capacidad, boolean conPileta , double precio) {
 		super();
 		this.nombre = nombre;
 		this.capacidad = capacidad;
 		this.conPileta = conPileta; 
 		this.precio = precio;
-		this.reservas = reservas;
 	}
 
 	public long getId() {
@@ -91,8 +91,8 @@ public class Salon {
 		return reservas;
 	}
 
-	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
+	public void setReservas(Reserva reserva) {
+		reservas.add(reserva);
 	}
 
 	public void mostrarDatos() {

@@ -1,5 +1,6 @@
 package ar.edu.unju.escmi.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -32,25 +33,24 @@ public class Cliente {
 	private String domicilio;
 	
 	@Column(name= "cliente_telefono", nullable = false)
-	private long telefono;
+	private String telefono;
 	
 	@Column(name = "cliente_estado")
 	private boolean estado = true;
 	
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-	private List<Reserva> reservas;
+	private List<Reserva> reservas = new ArrayList<>();
 
 	public Cliente() {
 	}
 	
-	public Cliente(int dni, String nombre, String apellido, String domicilio, long telefono, List<Reserva> reservas) {
+	public Cliente(int dni, String nombre, String apellido, String domicilio, String telefono) {
 		super();
 		this.dni = dni;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.domicilio = domicilio;
 		this.telefono = telefono;
-		this.reservas = reservas;
 	}
 
 	public long getId() {
@@ -93,11 +93,11 @@ public class Cliente {
 		this.domicilio = domicilio;
 	}
 
-	public long getTelefono() {
+	public String getTelefono() {
 		return telefono;
 	}
 
-	public void setTelefono(long telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 
@@ -113,8 +113,8 @@ public class Cliente {
 		return reservas;
 	}
 
-	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
+	public void setReservas(Reserva reserva) {
+		reservas.add(reserva);
 	}
 
 	public void mostrarCliente() {

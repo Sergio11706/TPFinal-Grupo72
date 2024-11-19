@@ -14,7 +14,7 @@ public class SalonDaoImp implements ISalonDao {
 
 	@Override
 	public void mostrarLosSalones() {
-		Query query = manager.createQuery("SELECT e FROM Salon s",Salon.class);
+		Query query = manager.createQuery("SELECT e FROM Salon e",Salon.class);
 		@SuppressWarnings("unchecked")
 		List<Salon> salones = query.getResultList();
 		for(Salon salon : salones) {

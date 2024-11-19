@@ -1,6 +1,7 @@
 package ar.edu.unju.escmi.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -31,7 +32,7 @@ public class Reserva {
 	private Salon salon;
 	
 	@Column(name = "reserva_fecha")
-	private LocalDate fecha = LocalDate.now();
+	private LocalDate fecha;
 	
 	@Column(name = "reserva_hora_inicio")
 	private short horaInicio;
@@ -43,7 +44,7 @@ public class Reserva {
 	private double montoPagado;
 	
 	@OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
-    private List<ServicioAdicional> servicios;
+    private List<ServicioAdicional> servicios = new ArrayList<>();
 	
 	@Column(name = "reserva_pago_adelantado")
 	private double pagoAdelantado;
@@ -58,7 +59,7 @@ public class Reserva {
 	}
 
 	public Reserva(Cliente cliente, Salon salon, LocalDate fecha, short horaInicio, short horaFin, double montoPagado,
-			List<ServicioAdicional> servicios, double pagoAdelantado, boolean cancelado) {
+			double pagoAdelantado, boolean cancelado) {
 		super();
 		this.cliente = cliente;
 		this.salon = salon;
@@ -66,7 +67,6 @@ public class Reserva {
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
 		this.montoPagado = montoPagado;
-		this.servicios = servicios;
 		this.pagoAdelantado = pagoAdelantado;
 		this.cancelado = cancelado;
 	}
@@ -131,8 +131,8 @@ public class Reserva {
 		return servicios;
 	}
 
-	public void setServicios(List<ServicioAdicional> servicios) {
-		this.servicios = servicios;
+	public void setServicios(ServicioAdicional servicio) {
+		servicios.add(servicio);
 	}
 
 	public double getPagoAdelantado() {
@@ -191,7 +191,7 @@ public class Reserva {
 		System.out.println("Reservado de: " + horaInicio + " - " + horaFin);
 		
 		if(servicios != null && !servicios.isEmpty()) {
-			System.out.println("Servicios adicionales: " + servicios);
+			System.out.println("Servicios adicionales: ");
 			servicios.forEach(servicio ->
 			System.out.println(" -" + servicio.getDescripcion() + ": $" + servicio.getPrecio()));
 		}
